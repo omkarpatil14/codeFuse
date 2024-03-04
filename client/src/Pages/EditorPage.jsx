@@ -25,7 +25,7 @@ function EditorPage() {
   return (
     <div id='mainWrap' className=' flex    h-[100%]   no-scrollbar '  >
       <div id="aside" className='bg-[#1c1e29] text-[#fff] flex  flex-col w-[18%] h-screen ' >
-        <div id='asideInner' className=' h-screen pl-3 gap-3 ' >
+        <div id='asideInner' className=' h-screen pl-3 gap-1 ' >
         <div id='logo'
           className="flex
             p-2 items-center "

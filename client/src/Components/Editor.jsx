@@ -28,8 +28,8 @@ function Editor() {
 
   return (
     <div>
-        <div className='p-5'>
-            <button className='bg-white p-1 rounded-lg px-3  font-bold ' >language </button>
+        <div className='p-6'>
+            <button className='bg-white p-1 rounded-lg px-4 font-bold ' >language </button>
         </div>
         <textarea id='realtimeEditor' className='no-scrollbar'  ></textarea>
     </div>
