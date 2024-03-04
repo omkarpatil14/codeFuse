@@ -44,7 +44,7 @@ function EditorPage() {
           </div>
 
         </div>
-        <div className='flex flex-col justify-center  items-center  gap-3 bg-[#1c1e29] p-[18px]' >
+        <div className='flex flex-col justify-center  items-center  gap-2 bg-[#1c1e29] p-[18px]' >
         <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[10px]   " >RUN</button>
         <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[10px]   " >Copy room ID</button>
         <button className=" w-[80%] bg-white p-[5px] text-red-600 font-bold rounded-[10px]  " >Leave</button>

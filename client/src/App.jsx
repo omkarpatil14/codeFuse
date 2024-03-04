@@ -26,7 +26,7 @@ function App() {
 
       </Toaster>
      </div>
-     <div className=' bg-[#1c1e29]   h-[100%] ' >
+     <div className=' bg-[#1c1e29]   h-screen' >
      <BrowserRouter>
      <Routes>
      <Route path='/' element={<Home/>}></Route>
