@@ -47,7 +47,7 @@ function Home() {
     <div
       id="homePageWrapper "
       className="flex
-     items-center justify-center  text-[#fff]  h-[100vh]   "
+     items-center justify-center  text-[#fff]   "
     >
       <div
         id="formWrapper"
