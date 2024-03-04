@@ -15,6 +15,7 @@ function EditorPage() {
     {socketId:1, username: "Omkar Patil"},
     {socketId:2,username:"Tejas Jagtap"},
     {socketId:2,username:"Tejas Jagtap"},
+    {socketId:2,username:"Tejas Jagtap"},
    
    
    
@@ -28,13 +29,13 @@ function EditorPage() {
         <div id='asideInner' className=' h-screen pl-3 gap-1 ' >
         <div id='logo'
           className="flex
-            p-2 items-center "
+            p-2 items-center justify-center "
         >
           <img src={logo} className="w-[80px] h-[80px] border-[#424242] "></img>
           <h1 className="m-3 text-[30px] text-[#ffd800]">CodeFuse</h1>
         </div>
-         <h3 className='text-white font-bold mb-4'  >Connected</h3>
-          <div id='clientsList' className='flex  h-[30rem]  flex-wrap gap-[20px] overflow-x-auto no-scrollbar  '  >
+         <h3 className='text-white font-bold mb-5  '  >Connected</h3>
+          <div id='clientsList' className='flex flex-wrap h-[30rem] gap-[20px] overflow-x-auto no-scrollbar  '  >
             {clients.map((client)=>(
                 
                    <Client  
