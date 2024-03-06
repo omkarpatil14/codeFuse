@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import logo from "../assets/logo.png"
 import Client from '../Components/Client';
 import Editor from '../Components/Editor';
@@ -10,6 +10,8 @@ function EditorPage() {
     console.log(output);
   },[])
   const[output,setOutPut]=useState("HOLAAAAA");
+
+  const socketRef = useRef();
    
   const [clients, setClients]= useState([
     {socketId:1, username: "Omkar Patil"},
@@ -28,14 +30,14 @@ function EditorPage() {
       <div id="aside" className='bg-[#1c1e29] text-[#fff] flex  flex-col w-[18%] h-screen ' >
         <div id='asideInner' className=' h-screen pl-3 gap-1 ' >
         <div id='logo'
-          className="flex
-            p-2 items-center justify-center "
+          className="flex md:flex-row flex-col
+            p-2 items-center justify-center " 
         >
-          <img src={logo} className="w-[80px] h-[80px] border-[#424242] "></img>
-          <h1 className="m-3 text-[30px] text-[#ffd800]">CodeFuse</h1>
+          <img src={logo} className=" max-w-[80px] max-h-[80px] border-[#424242] "></img>
+          <h1 className="m-3 md:text-[25px] text-[20px]  text-[#ffd800]">CodeFuse</h1>
         </div>
          <h3 className='text-white font-bold mb-5  '  >Connected</h3>
-          <div id='clientsList' className='flex flex-wrap h-[30rem] gap-[20px] overflow-x-auto no-scrollbar  '  >
+          <div id='clientsList' className='flex flex-wrap max-h-[30rem] gap-[20px] overflow-x-auto no-scrollbar  '  >
             {clients.map((client)=>(
                 
                    <Client  
