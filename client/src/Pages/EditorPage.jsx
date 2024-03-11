@@ -1,20 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react'
+import {initSocket} from "../socket"
+import { useLocation} from "react-router-dom"
 import logo from "../assets/logo.png"
 import Client from '../Components/Client';
 import Editor from '../Components/Editor';
 import Output from '../Components/Output';
+import ACTIONS from '../Actions';
 
 function EditorPage() {
 
-  useEffect(()=>{
-    console.log(output);
-  },[])
-  const[output,setOutPut]=useState("HOLAAAAA");
-
   const socketRef = useRef();
+  const location = useLocation();
+
+  useEffect(()=>{
+    const init= async()=>{
+         socketRef.current= await initSocket();
+         console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
+        //  socketRef.current.emit(ACTIONS.JOIN,{
+        //   roomId,
+        //   username:location.state?.username,
+        //  });
+    }
+    init();
+  },[])
+  const[output,setOutPut]=useState("YOUR CODE OUTPUT");
+
+  
    
   const [clients, setClients]= useState([
     {socketId:1, username: "Omkar Patil"},
+    {socketId:2,username:"Tejas Jagtap"},
+    {socketId:2,username:"Tejas Jagtap"},
+    {socketId:2,username:"Tejas Jagtap"},
+    {socketId:2,username:"Tejas Jagtap"},
+   
     {socketId:2,username:"Tejas Jagtap"},
     {socketId:2,username:"Tejas Jagtap"},
     {socketId:2,username:"Tejas Jagtap"},

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import '../App.css'
 import Codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
