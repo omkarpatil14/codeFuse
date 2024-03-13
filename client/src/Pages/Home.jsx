@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [roomId,setRoomId]=useState('');
-  const [userName,setUserName]=useState('');
+  const [username,setUsername]=useState('');
   const navigte= useNavigate();
 
    const createNewRoom=(e)=>{
@@ -22,12 +22,12 @@ function Home() {
    const joinRoom= ()=>{
       if(!roomId ){
          toast.error('ROOM ID is required')
-      }else if(!userName){
+      }else if(!username){
          toast.error('User Name is required')
       }else{
          navigte(`/editor/${roomId}`,{
             state:{
-               userName
+               username
             }
          })
       }
@@ -81,9 +81,9 @@ function Home() {
             type="text"
             id="inputBox"
             placeholder="User Name"
-            value={userName}
+            value={username}
             onKeyUp={handleInput}
-            onChange={(e)=>setUserName(e.target.value)}
+            onChange={(e)=>setUsername(e.target.value)}
             className="border border-[#ffd800] rounded-[10px] p-[8px] outline-none mb-[14px] bg-transparent w-[100%] font-bold "
           />
         </div>
