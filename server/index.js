@@ -22,6 +22,8 @@ const port = 5000;
    });
 
  }
+
+
 // Listen for 'connection' event on the 'io' instance, which triggers whenever a new client connects.
 io.on('connection',(socket)=>{
  console.log('socket conneted',socket.id );
@@ -44,6 +46,14 @@ io.on('connection',(socket)=>{
        })
     })
    })
+
+
+   // we receive code from one socket and we will broadcast to every client/socket 
+   socket.on(ACTIONS.CODE_CHANGE,({roomId,code})=>{
+       socket.in(roomId).emit(ACTIONS.CODE_CHANGE,{code})
+   })
+
+
 
    socket.on('disconnecting',()=>{
     // we will get rooms in map format so we are converting it into array using spread opreator

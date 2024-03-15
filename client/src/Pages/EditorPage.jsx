@@ -45,6 +45,7 @@ function EditorPage() {
             console.log(`${username} joined the room `);
            }
            setClients(clients);
+           socketRef.current.emit(ACTIONS.SYNC_CODE,{})
 
 
       });
@@ -72,7 +73,22 @@ function EditorPage() {
     }
   }, []);
   const [output, setOutPut] = useState("YOUR CODE OUTPUT");
+  
+  //function to copy room Id
+  async function copyRoomId(){
+    try{
+            await navigator.clipboard.writeText(roomId);
+            toast.success(`Room ID is copied`)
+    }catch(err){
+           toast.error('Could not copy room ID');
+           console.log(err);
+    }
+  }
 
+  // we wil navigate to home page this will trriger return of useEffect in editor page which will do socket.off() method this will remove socket  from connection
+  function leaveRoom(){
+    reactNavigator('/');
+  }
   
   
   if(!location.state){
@@ -114,16 +130,16 @@ function EditorPage() {
           <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[10px]   ">
             RUN
           </button>
-          <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[10px]   ">
+          <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[10px]   " onClick={copyRoomId}  >
             Copy room ID
           </button>
-          <button className=" w-[80%] bg-white p-[5px] text-red-600 font-bold rounded-[10px]  ">
+          <button className=" w-[80%] bg-white p-[5px] text-red-600 font-bold rounded-[10px]  " onClick={leaveRoom} >
             Leave
           </button>
         </div>
       </div>
       <div id="editorwrap" className=" w-[50%] h-screen overflow-hidden   ">
-        <Editor />
+        <Editor socketRef={socketRef} roomId={roomId}  />
       </div>
       <div className=" w-[32%] ">
         <Output output={output} />
