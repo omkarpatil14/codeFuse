@@ -7,14 +7,17 @@ import toast from "react-hot-toast";
 import Editor from "../Components/Editor";
 import Output from "../Components/Output";
 import ACTIONS from "../Actions";
-
+import axios from 'axios';
 function EditorPage() {
    // Create a reference to hold the socket instance.
   const socketRef = useRef();
+  // code ref
+  const codeRef = useRef(null);
     // Get the current location using the useLocation hook.
   const location = useLocation();
   const {roomId} = useParams();
   const [clients, setClients] = useState([]);
+  const [input, setInput] = useState("")
 
   const reactNavigator = useNavigate();
 
@@ -45,7 +48,10 @@ function EditorPage() {
             console.log(`${username} joined the room `);
            }
            setClients(clients);
-           socketRef.current.emit(ACTIONS.SYNC_CODE,{})
+           socketRef.current.emit(ACTIONS.SYNC_CODE, {
+           code: codeRef.current,
+           socketId
+          });
 
 
       });
@@ -72,7 +78,7 @@ function EditorPage() {
       
     }
   }, []);
-  const [output, setOutPut] = useState("YOUR CODE OUTPUT");
+  const [output, setOutPut] = useState("");
   
   //function to copy room Id
   async function copyRoomId(){
@@ -89,7 +95,34 @@ function EditorPage() {
   function leaveRoom(){
     reactNavigator('/');
   }
+
+  async function runcode(){
+    try {
+        const response = await axios.request(options);
+        setOutPut(response.data.output);
+        console.log(response);
+    } catch (error) {
+        toast.error(`${error}`);
+        console.error(error);
+    }
+}
   
+  const options = {
+    method: 'POST',
+    url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': 'b47c34aab5mshb32a51b8973e039p18f5c7jsn9b05d27ea10f',
+      'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+    },
+    data: {
+      language: 'cpp17',
+      version: 'latest',
+      code: input,
+      input: 7,
+    }
+  };
+
   
   if(!location.state){
    return  <Navigate  to='/' />
@@ -127,7 +160,7 @@ function EditorPage() {
           </div>
         </div>
         <div className="flex flex-col justify-center  items-center  gap-2 bg-[#1c1e29] p-[18px]">
-          <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[10px]   ">
+          <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[10px]   " onClick={runcode}  >
             RUN
           </button>
           <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[10px]   " onClick={copyRoomId}  >
@@ -139,10 +172,17 @@ function EditorPage() {
         </div>
       </div>
       <div id="editorwrap" className=" w-[50%] h-screen overflow-hidden   ">
-        <Editor socketRef={socketRef} roomId={roomId}  />
+        <Editor 
+         socketRef={socketRef}
+          roomId={roomId} 
+        onCodeChange={(code) => {
+          codeRef.current = code;
+          setInput(code); //  code to  run  
+          
+      }} />
       </div>
-      <div className=" w-[32%] ">
-        <Output output={output} />
+      <div className=" w-[32%] "  >
+        <Output output={output}  />
       </div>
     </div>
   );
