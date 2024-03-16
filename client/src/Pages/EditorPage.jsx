@@ -116,7 +116,7 @@ function EditorPage() {
       'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
     },
     data: {
-      language: 'cpp17',
+      language: 'python3',
       version: 'latest',
       code: input,
       input: 7,
