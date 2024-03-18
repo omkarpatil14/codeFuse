@@ -8,6 +8,7 @@ import Editor from "../Components/Editor";
 import Output from "../Components/Output";
 import ACTIONS from "../Actions";
 import axios from 'axios';
+import Stats from "../Components/Stats";
 function EditorPage() {
    // Create a reference to hold the socket instance.
   const socketRef = useRef();
@@ -17,7 +18,11 @@ function EditorPage() {
   const location = useLocation();
   const {roomId} = useParams();
   const [clients, setClients] = useState([]);
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState("");
+  const [cpu, setCpu] = useState("");
+  const [output, setOutPut] = useState("");
+  const [memo, setMemo]= useState("");
+  const API_KEY=import.meta.env.VITE_REACT_APP_API_KEY;
 
   const reactNavigator = useNavigate();
 
@@ -78,7 +83,7 @@ function EditorPage() {
       
     }
   }, []);
-  const [output, setOutPut] = useState("");
+  
   
   //function to copy room Id
   async function copyRoomId(){
@@ -100,28 +105,30 @@ function EditorPage() {
     try {
         const response = await axios.request(options);
         setOutPut(response.data.output);
-        console.log(response);
+        setCpu(response.data.cpuTime)
+        setMemo(response.data.memory)
+        console.log(response.data.cpuTime);
     } catch (error) {
         toast.error(`${error}`);
         console.error(error);
     }
 }
   
-  const options = {
-    method: 'POST',
-    url: 'https://online-code-compiler.p.rapidapi.com/v1/',
-    headers: {
-      'content-type': 'application/json',
-      'X-RapidAPI-Key': 'b47c34aab5mshb32a51b8973e039p18f5c7jsn9b05d27ea10f',
-      'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
-    },
-    data: {
-      language: 'python3',
-      version: 'latest',
-      code: input,
-      input: 7,
-    }
-  };
+const options = {
+  method: 'POST',
+  url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+  headers: {
+    'content-type': 'application/json',
+    'X-RapidAPI-Key': "da0694b179msh714078dc600f0fap1172e9jsne9b4f846a0e4" ,
+    'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+  },
+  data: {
+    language: 'python3',
+    version: 'latest',
+    code: 'print("Hello, World!");',
+    input: null
+  }
+};
 
   
   if(!location.state){
@@ -183,6 +190,7 @@ function EditorPage() {
       </div>
       <div className=" w-[32%] "  >
         <Output output={output}  />
+        <Stats cpu={cpu} memo={memo}  />
       </div>
     </div>
   );

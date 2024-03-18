@@ -3,10 +3,28 @@ const app = express();
 const {Server}= require("socket.io")
 const http = require('http');
 const{ACTIONS}= require('../server/Actions')
-
+const path = require('path');
+ 
 const server = http.createServer(app);
 const io= new Server(server);
-const port = 5000;
+
+require('dotenv').config();
+
+const port = process.env.PORT || 5001;   
+
+// app.use(express.static(path.join(__dirname, 'client')));
+
+//middleware
+// Middleware to serve Vite-built files
+  
+app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+
+// Middleware to handle all other routes
+app.get('*', (req, res) => {
+    
+    res.sendFile(path.join("../client/dist", '..', 'client', 'dist', 'index.html'));
+  });
+
 
  const userSocketMap={};
 
@@ -21,7 +39,7 @@ const port = 5000;
     }
    });
 
- }
+ } 
 
 
 // Listen for 'connection' event on the 'io' instance, which triggers whenever a new client connects.
@@ -53,10 +71,6 @@ io.on('connection',(socket)=>{
        socket.in(roomId).emit(ACTIONS.CODE_CHANGE,{code})
    })
 
-   socket.on(ACTIONS.SYNC_CODE,({socketId, code})=>{
-       io.to(socketId).emit(ACTIONS.CODE_CHANGE,{ code})
-   })
-
 
 
    socket.on('disconnecting',()=>{
@@ -72,7 +86,7 @@ io.on('connection',(socket)=>{
     delete userSocketMap[socket.id];
     socket.leave();
    })
-})
+}) 
 
-app.get('/', (req, res) => res.send('welcome to the backend of codeFuse!'))
+// app.get('/', (req, res) => res.send('welcome to the backend of codeFuse!'))
 server.listen(port, () => console.log(`Example app listening on port ${port}!`))
