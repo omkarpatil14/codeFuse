@@ -145,16 +145,14 @@ const options = {
         <div id="asideInner" className=" h-screen pl-3 gap-1 ">
           <div
             id="logo"
-            className="flex md:flex-row flex-col
-            p-2 items-center justify-center "
+            className="flex 
+            p-4 items-center justify-center "
           >
             <img
               src={logo}
-              className=" max-w-[80px] max-h-[80px] border-[#424242] "
+              className="  w-[50vw] h-16 border-[#424242] "
             ></img>
-            <h1 className="m-3 md:text-[25px] text-[20px]  text-[#ffd800]">
-              CodeFuse
-            </h1>
+           
           </div>
           <h3 className="text-white font-bold mb-5  ">Connected</h3>
           <div
