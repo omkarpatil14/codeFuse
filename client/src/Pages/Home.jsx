@@ -57,7 +57,7 @@ function Home() {
           className="flex
             p-3 pb-5 gap- items-center justify-center "
         >
-          <img src={logo} className="w-[] h-13 "></img>
+          <img src={logo} className=" h-13 "></img>
          
         </div>
         <div id="mainLabel" className="mb-[20px] mt-0 font-bold ">

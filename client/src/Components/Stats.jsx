@@ -5,19 +5,19 @@ function Stats({cpu , memo}) {
     return (
         <div className='flex flex-col  justify-center items-center pt-[20px]  gap-2'  >
             <div className=' p-3  pt-5 text-lg  text-white font-bold   ' >
-            stats
+            STATS
             </div>
-            <div  className=' h-[20vh]  w-[80%] p-2  rounded-lg border  font-sans  text-blue-300 ' disabled={true}  > 
+            <div  className=' h-[20vh]  w-[80%] p-3 pl-4  rounded-lg border   font-sans  text-blue-300 ' disabled={true}  > 
              <div>
                 {cpu && <div>
-                    CPU time: {cpu} seconds
+                    CPU time: <span className='text-orange-400'>{cpu}</span> s
                 </div>
                    
                 }
              </div>
              <div>
              {memo && <div>
-                memory: {memo}
+                Memory: <span className='text-orange-400'>{memo/1024}</span> kb
                 </div>
                    
                 }

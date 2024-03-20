@@ -18,9 +18,10 @@ function EditorPage() {
   const location = useLocation();
   const {roomId} = useParams();
   const [clients, setClients] = useState([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(" ");
   const [cpu, setCpu] = useState("");
-  const [output, setOutPut] = useState("");
+  const [output, setOutPut] = useState(" ");
+  const[lang, setLang]= useState("cpp")
   const [memo, setMemo]= useState("");
   const API_KEY=import.meta.env.VITE_REACT_APP_API_KEY;
 
@@ -104,9 +105,12 @@ function EditorPage() {
   async function runcode(){
     try {
         const response = await axios.request(options);
+
         setOutPut(response.data.output);
         setCpu(response.data.cpuTime)
         setMemo(response.data.memory)
+        console.log(input);
+        console.log(response);
         console.log(response.data.cpuTime);
     } catch (error) {
         toast.error(`${error}`);
@@ -119,13 +123,13 @@ const options = {
   url: 'https://online-code-compiler.p.rapidapi.com/v1/',
   headers: {
     'content-type': 'application/json',
-    'X-RapidAPI-Key': "da0694b179msh714078dc600f0fap1172e9jsne9b4f846a0e4" ,
+    'X-RapidAPI-Key': "de7409c4d2mshbb7c4c2e44bb6bap1a7b0ajsned3c5fd7c9e4" ,
     'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
   },
   data: {
-    language: 'python3',
+    language: lang,
     version: 'latest',
-    code: 'print("Hello, World!");',
+    code: input,
     input: null
   }
 };
@@ -165,13 +169,13 @@ const options = {
           </div>
         </div>
         <div className="flex flex-col justify-center  items-center  gap-2 bg-[#1c1e29] p-[18px]">
-          <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[10px]   " onClick={runcode}  >
+          <button className=" w-[80%]  bg-[#00ff00] p-[5px] text-black font-bold rounded-[5px]   " onClick={runcode}  >
             RUN
           </button>
-          <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[10px]   " onClick={copyRoomId}  >
+          <button className=" w-[80%]  bg-white p-[5px] text-black font-bold rounded-[5px]   " onClick={copyRoomId}  >
             Copy room ID
           </button>
-          <button className=" w-[80%] bg-white p-[5px] text-red-600 font-bold rounded-[10px]  " onClick={leaveRoom} >
+          <button className=" w-[80%] bg-slate-800 border-slate-400 border p-[5px] text-white font-bold rounded-[5px]  " onClick={leaveRoom} >
             Leave
           </button>
         </div>
@@ -182,8 +186,14 @@ const options = {
           roomId={roomId} 
         onCodeChange={(code) => {
           codeRef.current = code;
-          setInput(code); //  code to  run  
           
+          setInput(code); //  code to  run  
+         
+          
+      }}
+      onLangChange={(lang)=>{
+        setLang(lang);
+        console.log(lang);
       }} />
       </div>
       <div className=" w-[32%] "  >

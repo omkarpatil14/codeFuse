@@ -1,116 +1,102 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import '../App.css'
+import React, { useEffect, useRef, useState } from 'react';
 import Codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
+import 'codemirror/theme/abbott.css';
+import 'codemirror/theme/eclipse.css';
+import 'codemirror/theme/solarized.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
-import "E:/My Projects/CodeFuse/client/src/App.css";
 import ACTIONS from '../Actions';
-import { stringify } from 'uuid';
 
-function Editor({socketRef,roomId, onCodeChange}) {
-     // Using useRef hook to create a reference
+function Editor({ socketRef, roomId, onCodeChange, onLangChange }) {
     const editorRef = useRef();
-    const [newCode, setNewCode]= useState(' ');
+    const [newCode, setNewCode] = useState('');
+    const [theme, setTheme] = useState(() => {
+        // Retrieve the theme from localStorage if it exists, otherwise set the default theme
+        return localStorage.getItem('theme') || 'dracula';
+    });
+
     useEffect(() => {
         async function init() {
-              // Creating a CodeMirror instance from a textarea element with the id 'realtimeEditor'
             editorRef.current = Codemirror.fromTextArea(
                 document.getElementById('realtimeEditor'),
                 {
                     mode: { name: 'javascript', json: true },
-                    theme: 'dracula',
+                    theme: theme,
                     autoCloseTags: true,
-                     autoCloseBrackets: true,
+                    autoCloseBrackets: true,
                     lineNumbers: true,
-                });
-
-
-
-                
-
-
-             
-                  
-                    
-                
-        }
-
-        init();
-
-    },[]);
-
-    useEffect(()=>{
-        // Adding a change event listener to the editor instance  which is a codemirror liabrary method 
-        editorRef.current.on('change', (instance , changes)=>{
-            // console.log(changes.text);
-            // Destructuring the 'origin' property from the 'changes' object
-            const {origin }= changes;
-
-            
-            // Getting the entire code from the editor instance after the change.
-            
-            
-            const code =  instance.getValue(); 
-            // setNewCode(  (prev)=> prev=instance.getValue());
-            
-            onCodeChange(code); // this will return code to the editor page (child- parent deata transfer)
-            
-               
-            // console.log(newCode);   
-            // console.log(code);
-
-            if(origin !== 'setValue'){
-                socketRef.current.emit(ACTIONS.CODE_CHANGE,{ 
-                    roomId,
-                    code,
-                })
-            }
-            
-            // console.log(code);
-        });
-    },[newCode])
-
-    useEffect(()=>{
- 
-        if(socketRef.current){
-         // we will receive edited code by any socket by server 
-            socketRef.current.on(ACTIONS.CODE_CHANGE,({code})=>{
-                if(code!== null){
-                    setNewCode(code);
-                    console.log(code);
-                    editorRef.current.setValue(code);
-                
-                    // console.log(editorRef.current.getValue());
                 }
-          })
-           
+            );
         }
-
-       return ()=>{
-        socketRef.current.off(ACTIONS.CODE_CHANGE);
-       }
-
-       
-    },[socketRef.current])      
+        init();
+    }, [theme]);
 
     useEffect(() => {
-        console.log(newCode); 
-      }, [newCode]);
+        editorRef.current.on('change', (instance, changes) => {
+            const { origin } = changes;
+            const code = instance.getValue();
+            onCodeChange(code);
+            if (origin !== 'setValue') {
+                socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                    roomId,
+                    code,
+                });
+            }
+        });
+    }, []);
 
-  return (
-    <div>
-        <div className='p-6 flex pt-9 gap-4 ' >
-            <button className='bg-white p-1 rounded-lg px-4 font-bold ' >Language </button>
-            <button className='bg-white p-1 rounded-lg px-4 font-bold ' >Theme </button>
+    useEffect(() => {
+        if (socketRef.current) {
+            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+                if (code !== null) {
+                    setNewCode(code);
+                    editorRef.current.setValue(code);
+                }
+            });
+        }
+        return () => {
+            socketRef.current.off(ACTIONS.CODE_CHANGE);
+        };
+    }, [socketRef.current]);
+
+    useEffect(() => {
+        // Save the selected theme to localStorage
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    function handleLang(e) {
+        onLangChange(e.target.value);
+    }
+
+    function handleTheme(e) {
+        setTheme(e.target.value);
+    }
+
+    return (
+        <div>
+            <div className='p-6 flex pt-9 gap-4 '>
+                <select name='language' id='language' className='bg-white p-1 rounded-lg px-4 font-bold  flex justify-center items-center' onChange={handleLang}>
+                    <option value='cpp' className='flex justify-center items-center'>C++</option>
+                    <option value='python3'>Python3</option>
+                    <option value='dart'>Dart</option>
+                    <option value='rust'>Rust</option>
+                    <option value='sql'>SQL</option>
+                    <option value='nodejs'>NodeJS</option>
+                    <option value='lolcode'>LOLCODE</option>
+                </select>
+                <select name='language' id='language' className='bg-white p-1 rounded-lg px-4 font-bold  flex justify-center items-center' onChange={handleTheme}>
+                    <option value='dracula' className='flex justify-center items-center'>Dracula</option>
+                    <option value='abbott'>Abbott</option>
+                    <option value='eclipse'>Eclipse</option>
+                    <option value='solarized'>Solarized</option>
+                </select>
+            </div>
+            <textarea id='realtimeEditor' className='no-scrollbar'></textarea>
         </div>
-        <textarea id='realtimeEditor' className='no-scrollbar'  ></textarea>
-    </div>
-  )
-    
-  
+    );
 }
 
-export default Editor
+export default Editor;
