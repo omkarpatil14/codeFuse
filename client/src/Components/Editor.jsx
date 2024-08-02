@@ -13,10 +13,7 @@ import ACTIONS from '../Actions';
 function Editor({ socketRef, roomId, onCodeChange, onLangChange }) {
     const editorRef = useRef();
     const [newCode, setNewCode] = useState('');
-    const [theme, setTheme] = useState(() => {
-        // Retrieve the theme from localStorage if it exists, otherwise set the default theme
-        return localStorage.getItem('theme') || 'dracula';
-    });
+    const [theme, setTheme] = useState("dracula");
 
     useEffect(() => {
         async function init() {
@@ -77,23 +74,23 @@ function Editor({ socketRef, roomId, onCodeChange, onLangChange }) {
 
     return (
         <div>
-            <div className='p-6 flex pt-9 gap-4 '>
-                <select name='language' id='language' className='bg-white p-1 rounded-lg px-4 font-bold  flex justify-center items-center' onChange={handleLang}>
-                    <option value='cpp' className='flex justify-center items-center'>C++</option>
-                    <option value='python3'>Python3</option>
-                    <option value='dart'>Dart</option>
-                    <option value='rust'>Rust</option>
-                    <option value='sql'>SQL</option>
-                    <option value='nodejs'>NodeJS</option>
-                    <option value='lolcode'>LOLCODE</option>
-                </select>
-                <select name='language' id='language' className='bg-white p-1 rounded-lg px-4 font-bold  flex justify-center items-center' onChange={handleTheme}>
-                    <option value='dracula' className='flex justify-center items-center'>Dracula</option>
-                    <option value='abbott'>Abbott</option>
-                    <option value='eclipse'>Eclipse</option>
-                    <option value='solarized'>Solarized</option>
-                </select>
-            </div>
+           <div className='p-6 flex pt-9 gap-4'>
+    <select 
+        name='language' 
+        id='language' 
+        className=' bg-slate-800 text-yellow-400 border border-yellow-400 cursor-pointer p-1 rounded-lg px-4 font-bold flex justify-center items-center' 
+        onChange={handleLang}
+    >
+        <option value='cpp' className='flex justify-center items-center'>C++</option>
+        <option value='python3'>Python3</option>
+        <option value='dart'>Dart</option>
+        <option value='rust'>Rust</option>
+        <option value='sql'>SQL</option>
+        <option value='nodejs'>NodeJS</option>
+        <option value='lolcode'>LOLCODE</option>
+    </select>   
+</div>
+
             <textarea id='realtimeEditor' className='no-scrollbar'></textarea>
         </div>
     );
