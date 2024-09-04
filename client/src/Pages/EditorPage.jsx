@@ -108,9 +108,8 @@ function EditorPage() {
 
   async function runcode(){
     try {
-      console.log("run");
         const response = await axios.request(options);
-        
+
         setOutPut(response.data.output);
         setCpu(response.data.cpuTime)
         setMemo(response.data.memory)
@@ -125,19 +124,18 @@ function EditorPage() {
   
 const options = {
   method: 'POST',
-  url: 'https://online-code-compiler.p.rapidapi.com/v1/',
+  url: 'https://code-runner.p.rapidapi.com/run_code',
   headers: {
-    'content-type': 'application/json',
-    'X-RapidAPI-Key': "88ae05f3b5mshdeea729b822f2c2p1e71f5jsn0753950aaeb7" ,
-    'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
+    'x-rapidapi-key': 'b47c34aab5mshb32a51b8973e039p18f5c7jsn9b05d27ea10f',
+    'x-rapidapi-host': 'code-runner.p.rapidapi.com',
+    'Content-Type': 'application/json'
   },
   data: {
-    language: lang,
-    version: 'latest',
     code: input,
-    input: null
+    language: lang
   }
 };
+
 
   
   if(!location.state){
