@@ -12,7 +12,7 @@ require('dotenv').config();
 
 const port = process.env.PORT || 5001;   
 
-// app.use(express.static(path.join(__dirname, 'client')));
+
 
 //middleware
 // Middleware to serve Vite-built files
@@ -25,7 +25,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
   });
 
-
+//created array which will store userName at a index which is its SocketId 
  const userSocketMap={};
 
  function getAllConnectedClients(roomId){
@@ -63,9 +63,11 @@ io.on('connection',(socket)=>{
         socketId:socket.id
        })
     })
-   })
 
+   
+   })                
 
+    
    // we receive code from one socket and we will broadcast to every client/socket 
    socket.on(ACTIONS.CODE_CHANGE,({roomId,code})=>{
        socket.in(roomId).emit(ACTIONS.CODE_CHANGE,{code})

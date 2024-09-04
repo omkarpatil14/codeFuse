@@ -34,11 +34,11 @@ function EditorPage() {
       socketRef.current.on("connect_error", (err) => handleErrors(err));
       socketRef.current.on("connect_failed", (err) => handleErrors(err));
 
-      function handleErrors(e) {
+      function handleErrors(e){
         console.log("socket error", e);
         toast.error("socket connection failed , try again later");
         reactNavigator("/");
-      }
+      }  
 
       console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
       // Emit a 'JOIN' action to the server using the current socket instance and pass roomId and username which we will store in our map 
@@ -54,6 +54,10 @@ function EditorPage() {
             console.log(`${username} joined the room `);
            }
            setClients(clients);
+          //  codeRef.current=localStorage.getItem(`${roomId}`)
+        
+          
+           console.log("client is set");
            socketRef.current.emit(ACTIONS.SYNC_CODE, {
            code: codeRef.current,
            socketId
@@ -104,8 +108,9 @@ function EditorPage() {
 
   async function runcode(){
     try {
+      console.log("run");
         const response = await axios.request(options);
-
+        
         setOutPut(response.data.output);
         setCpu(response.data.cpuTime)
         setMemo(response.data.memory)
@@ -123,7 +128,7 @@ const options = {
   url: 'https://online-code-compiler.p.rapidapi.com/v1/',
   headers: {
     'content-type': 'application/json',
-    'X-RapidAPI-Key': "de7409c4d2mshbb7c4c2e44bb6bap1a7b0ajsned3c5fd7c9e4" ,
+    'X-RapidAPI-Key': "88ae05f3b5mshdeea729b822f2c2p1e71f5jsn0753950aaeb7" ,
     'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
   },
   data: {

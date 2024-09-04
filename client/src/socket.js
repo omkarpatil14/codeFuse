@@ -6,7 +6,8 @@ export const initSocket = async () => {
         'force new connection': true,
         reconnectionAttempt: 'Infinity',
         timeout: 10000,
-        transports: ['websocket'],
+        reconnection: true,
+        transports: ['websocket' , 'polling'],
     };
     return io(import.meta.env.VITE_REACT_APP_BACKEND_URL, options);
 };

@@ -34,7 +34,11 @@ function Editor({ socketRef, roomId, onCodeChange, onLangChange }) {
     useEffect(() => {
         editorRef.current.on('change', (instance, changes) => {
             const { origin } = changes;
-            const code = instance.getValue();
+            // console.log(origin);
+            const code = instance.getValue(); 
+            // console.log(code);
+            localStorage.setItem(`${roomId}`,JSON.stringify(code) );
+           
             onCodeChange(code);
             if (origin !== 'setValue') {
                 socketRef.current.emit(ACTIONS.CODE_CHANGE, {
@@ -42,6 +46,7 @@ function Editor({ socketRef, roomId, onCodeChange, onLangChange }) {
                     code,
                 });
             }
+       
         });
     }, []);
 
